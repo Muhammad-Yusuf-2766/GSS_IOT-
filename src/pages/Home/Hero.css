@@ -1,0 +1,9 @@
+.swiper-pagination-bullet {
+	background-color: white; /* Default dot color */
+	opacity: 1; /* Make sure the dots are fully visible */
+	margin: 0 20px;
+}
+
+.swiper-pagination-bullet-active {
+	background-color: rgba(0, 0, 0, 0.543); /* Active dot color */
+}
