@@ -65,7 +65,7 @@ const DetailedService = () => {
 					<TertiaryLink
 						link={service.pdf_url}
 						isNested
-						className='w-[250px] h-[70px]  bg-indigo-600 text-white hover:bg-indigo-700'
+						className='w-[250px] h-[70px] bg-indigo-600 text-white hover:bg-indigo-700'
 					>
 						About Service
 						<img src={download_icon} alt='Download Icon' className='ml-2' />

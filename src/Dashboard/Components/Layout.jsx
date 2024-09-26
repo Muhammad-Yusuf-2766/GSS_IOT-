@@ -5,6 +5,8 @@ import Sidebar from './Sidebar'
 const DashboardLayout = () => {
 	return (
 		<div className='flex bg-[#f5f5f5] h-screen'>
+			{' '}
+			{/* Kept the h-screen class */}
 			<Sidebar />
 			<div className='w-full ml-16 md:ml-56'>
 				<Header />

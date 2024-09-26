@@ -52,9 +52,8 @@ const Hero = () => {
 					{swiperData.map(data => (
 						<SwiperSlide
 							key={data.id}
-							className='w-full h-[100vh] relative aspect-square'
+							className='w-full h-[100vh] relative' // Kept from HEAD branch
 							style={{
-								aspectRatio: 16 / 9,
 								backgroundImage: `url(${data.bgImg})`,
 								backgroundSize: 'cover',
 								backgroundPosition: 'center',
@@ -79,7 +78,7 @@ const Hero = () => {
 
 				{/* Banner */}
 
-				<div className='w-full bg-white/90 h-auto flex items-center lg:justify-between md:justify-between sm:justify-center justify-center lg:gap-7 md:gap-7 sm:gap:5 gap-5 lg:px-24 md:px-16 sm:px-6 px-6  mt-6 flex-wrap'>
+				<div className='w-full bg-white/90 h-auto flex items-center lg:justify-between md:justify-between sm:justify-center justify-center lg:gap-7 md:gap-7 sm:gap-5 gap-5 lg:px-24 md:px-16 sm:px-6 px-6 mt-6 flex-wrap'>
 					{/* === 1 === */}
 					{statistics.map((item, index) => (
 						<div

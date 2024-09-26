@@ -2,6 +2,7 @@
 import { FaClipboardList, FaPlus } from 'react-icons/fa'
 import { GoBell } from 'react-icons/go'
 import { Link } from 'react-router-dom'
+
 const Header = () => {
 	return (
 		<div className='flex justify-between items-center p-4'>
@@ -47,7 +48,7 @@ const Header = () => {
 						</span>
 					</button>
 					<img
-						src='/Members/Kim_prof.jpg'
+						src='/Kim_prof.jpg' // Keep the most recent change here
 						alt='Admin_img'
 						className='w-14 h-14 rounded-full border-2 border-indigo-500'
 					/>

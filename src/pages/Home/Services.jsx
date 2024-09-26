@@ -23,7 +23,7 @@ export const Services = () => {
 				</div>
 				<PrimaryBtn
 					route={'/services'}
-					className='py-4 px-8 flex gap-x-4 border bg-indigo-600 text-white hover:bg-indigo-700'
+					className='bg-white/0 py-4 px-8 flex gap-x-4 border bg-indigo-500 text-white hover:bg-indigo-700'
 				>
 					View All Services
 					<MoveRight />
