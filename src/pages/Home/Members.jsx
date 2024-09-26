@@ -1,8 +1,8 @@
 import { CircleUserRound, MoveRight } from 'lucide-react'
 import React from 'react'
-import { MembersData } from '../../DB'
 import PrimaryBtn from '../../components/Button/PrimaryBtn'
-import MemberCard from '../../components/Card/member.card'
+import { CommunityCard } from '../../components/Card/MemberCard'
+import { MembersData } from '../../DB'
 
 const Members = () => {
 	return (
@@ -18,8 +18,8 @@ const Members = () => {
 				</h6>
 				<div className='w-full h-auto flex items-center justify-center lg:gap-x-8 md:gap-x-6 sm:gap-x-4 gap-x-3 lg:gap-y-8 md:gap-y-6 sm:gap-y-10 gap-y-10 flex-wrap mb-10'>
 					{/* Let's display them through loop */}
-					{MembersData.slice(0, 3).map(data => (
-						<MemberCard data={data} key={data.id} />
+					{MembersData.slice(0, 2).map(data => (
+						<CommunityCard data={data} key={data.id} />
 					))}
 				</div>
 				<PrimaryBtn
