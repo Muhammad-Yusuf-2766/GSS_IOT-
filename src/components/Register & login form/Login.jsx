@@ -1,6 +1,42 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { toast } from 'react-toastify'
+import { loginRequest } from '../../ApiServices/Auth_api'
 
 const LoginForm = () => {
+	const [user_email, setName] = useState('')
+	const [user_password, setPassword] = useState('')
+	const [error, setError] = useState('')
+	// const { setToken } = useContext(MainContext)
+
+	const handleSubmit = async e => {
+		e.preventDefault()
+		try {
+			const loginData = { user_email, user_password }
+			const data = await loginRequest(loginData)
+
+			// Handle successful login (e.g., store token, redirect)
+			if (data) {
+				console.log('User Data => ', data)
+				toast.success('Login successful!', {
+					onClose: () => {
+						window.location.reload() // Reload the page after toast is closed
+					},
+				})
+				setError('')
+				// Perform redirection or state update here
+			} else {
+				console.error('Error with Login :(')
+				toast.error('Login failed. Please try again.') // Display error toast if login fails
+			}
+		} catch (error) {
+			console.error(error)
+			setError(error.message || 'Login failed')
+			toast.error(
+				'An error occurred. Please check your credentials and try again.'
+			) // Display error toast for exceptions
+		}
+	}
+
 	return (
 		<div className='w-full h-screen grid grid-cols-2 justify-between items-center'>
 			<div>
@@ -21,23 +57,29 @@ const LoginForm = () => {
 							<h1 className='text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl'>
 								Login account
 							</h1>
-							<form className='space-y-4 md:space-y-6' action='#'>
+							<form className='space-y-4 md:space-y-6' onSubmit={handleSubmit}>
 								<div>
-									<label for='email' className='block mb-2 text-sm font-medium'>
-										Your email
+									<label
+										htmlFor='name'
+										className='block mb-2 text-sm font-medium'
+									>
+										Your Nick
 									</label>
 									<input
-										type='email'
-										name='email'
-										id='email'
+										type='text'
+										name='name'
+										id='name'
+										value={user_email}
+										autoComplete='username'
 										className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 '
 										placeholder='name@company.com'
 										required=''
+										onChange={e => setName(e.target.value)}
 									/>
 								</div>
 								<div>
 									<label
-										for='password'
+										htmlFor='password'
 										className='block mb-2 text-sm font-medium'
 									>
 										Password
@@ -47,8 +89,11 @@ const LoginForm = () => {
 										name='password'
 										id='password'
 										placeholder='••••••••'
+										autoComplete='current-password'
 										className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 '
 										required=''
+										value={user_password}
+										onChange={e => setPassword(e.target.value)}
 									/>
 								</div>
 
@@ -68,6 +113,7 @@ const LoginForm = () => {
 									</a>
 								</p>
 							</form>
+							<h1>{error}</h1>
 						</div>
 					</div>
 				</div>

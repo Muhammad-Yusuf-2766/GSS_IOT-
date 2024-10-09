@@ -2,14 +2,45 @@
 import { FaClipboardList, FaPlus } from 'react-icons/fa'
 import { GoBell } from 'react-icons/go'
 import { Link } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import { logOutRequest } from '../../ApiServices/Auth_api'
+import { verifyUserData } from '../../ApiServices/verifyAuth'
+import UserHeader from '../../components/User/Userbadge'
 
 const Header = () => {
+	// Handle logout
+	const handleLogoutRequest = async () => {
+		try {
+			const res = await logOutRequest()
+			if (res) {
+				toast.success('Log Out Successfully!', {
+					onClose: () => {
+						window.location.replace('/') // Use navigate here to redirect after logout
+					},
+				})
+			}
+			return res
+		} catch (err) {
+			console.log(err)
+			toast.error('Error on Logout :(')
+		}
+	}
+
 	return (
 		<div className='flex justify-between items-center p-4'>
-			<div>
-				<h1 className='text-xs font-bold text-gray-700'>Welcome Back!</h1>
-				<p className='text-xl font-semibold text-gray-700'>Manager Kim</p>
-			</div>
+			{verifyUserData && (
+				<div>
+					<h1 className='text-md font-semibold text-gray-700'>Welcome Back!</h1>
+					<p className='text-xl font-semibold text-gray-700'>
+						Manager{' '}
+						<span className='text-xl font-bold text-indigo-700'>
+							{' '}
+							{verifyUserData.user_name.toUpperCase()}
+						</span>
+					</p>
+				</div>
+			)}
+
 			<div className='flex items-center space-x-5'>
 				<div className='hidden md:flex'>
 					<Link to={'/dashboard/statistics-list'}>
@@ -47,11 +78,9 @@ const Header = () => {
 							9
 						</span>
 					</button>
-					<img
-						src='/Members/Kim_prof.jpg' // Keep the most recent change here
-						alt='Admin_img'
-						className='w-14 h-14 rounded-full border-2 border-indigo-500'
-					/>
+					<div className=''>
+						<UserHeader handeLogout={handleLogoutRequest} />
+					</div>
 				</div>
 			</div>
 		</div>

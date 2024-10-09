@@ -25,8 +25,7 @@ const ServiceCard = ({ data }) => {
 						<p className='text-base text-gray-200 font-normal text-center mb-4'>
 							{data.desc}
 						</p>
-						<TertiaryLink link='' isNested>
-							자세하게 보기
+						<TertiaryLink isNested>
 							<MoveRight className='w-4 h-4' />
 						</TertiaryLink>
 					</div>

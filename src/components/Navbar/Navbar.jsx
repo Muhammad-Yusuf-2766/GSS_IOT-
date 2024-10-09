@@ -1,10 +1,31 @@
 import { Menu, X } from 'lucide-react'
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import { logOutRequest } from '../../ApiServices/Auth_api'
+import { verifyUserData } from '../../ApiServices/verifyAuth'
 import PrimaryBtn from '../Button/PrimaryBtn'
+import UserHeader from '../User/Userbadge'
 
 const Navbar = () => {
 	const [navbar, setNavbar] = useState(false)
+	const handleLogoutRequest = async () => {
+		try {
+			const res = await logOutRequest()
+			if (res) {
+				toast.success('Log Out Successfully!', {
+					onClose: () => {
+						window.location.replace('/') // Use navigate here to redirect after logout
+					},
+				})
+			}
+			return res
+		} catch (err) {
+			console.log(err)
+			toast.error('Error on Logout :(')
+		}
+	}
+
 	const navItems = [
 		{
 			name: 'Home',
@@ -21,10 +42,6 @@ const Navbar = () => {
 		{
 			name: 'Community',
 			link: '/community',
-		},
-		{
-			name: 'Dashboard',
-			link: '/dashboard',
 		},
 	]
 	return (
@@ -76,20 +93,37 @@ const Navbar = () => {
 									</Link>
 								</li>
 							))}
+							<li>
+								{verifyUserData ? (
+									<Link
+										to='/dashboard'
+										className='text-gray-700 text-xl font-semibold hover:underline ease-out duration-700 mx-5 '
+									>
+										Dashboard
+									</Link>
+								) : null}
+							</li>
 						</ul>
 					</div>
 					<div className='flex gap-x-2'>
-						<PrimaryBtn
-							className='bg-indigo-600 text-gray-200'
-							route='/login'
-							children={'Login'}
-						/>
-
-						<PrimaryBtn
-							className='bg-indigo-600 text-gray-200'
-							route='/signup'
-							children='Sign-up'
-						/>
+						{verifyUserData ? (
+							<div>
+								<UserHeader handeLogout={handleLogoutRequest} />
+							</div>
+						) : (
+							<>
+								<PrimaryBtn
+									className='bg-indigo-600 text-gray-200'
+									route='/login'
+									children='Login'
+								/>
+								<PrimaryBtn
+									className='bg-indigo-600 text-gray-200'
+									route='/signup'
+									children='Sign-up'
+								/>
+							</>
+						)}
 					</div>
 				</div>
 			</nav>

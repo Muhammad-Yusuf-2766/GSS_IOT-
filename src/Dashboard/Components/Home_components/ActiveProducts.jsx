@@ -68,7 +68,7 @@ const ActiveProducts = () => {
 				</table>
 				<div className='flex justify-center items-center py-5 bg-white'>
 					<Link
-						to={'/clients'}
+						to={'clients'}
 						className='text-gray-700 font-bold text-xl hover:underline'
 					>
 						Click to All Clients

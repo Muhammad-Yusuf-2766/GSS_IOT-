@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import { AiOutlineProduct } from 'react-icons/ai'
 import { FaSuitcase } from 'react-icons/fa'
-import { LuBox, LuCalendar, LuMessageSquare, LuUser } from 'react-icons/lu'
+import { LuBox, LuUser } from 'react-icons/lu'
 import { TbUsers } from 'react-icons/tb'
 import { Link } from 'react-router-dom'
 // ==== ICONS ==== //
@@ -13,13 +13,13 @@ const Sidebar = () => {
 		setActiveLink(index)
 	}
 	const SIDEBAR_LINKS = [
-		{ id: 1, path: '/', name: 'Dashboard', icon: LuBox },
+		{ id: 1, path: '/dashboard', name: 'Dashboard', icon: LuBox },
 		{ id: 2, path: 'users', name: 'Users', icon: TbUsers },
-		{ id: 3, path: 'messages', name: 'Messages', icon: LuMessageSquare },
-		{ id: 4, path: 'projects', name: 'Projects', icon: FaSuitcase },
+		// { id: 3, path: 'messages', name: 'Messages', icon: LuMessageSquare },
+		{ id: 4, path: 'node_display', name: 'Display-Nodes', icon: FaSuitcase },
 		{ id: 4, path: 'products', name: 'Products', icon: AiOutlineProduct },
 		{ id: 5, path: 'clients', name: 'Clients', icon: LuUser },
-		{ id: 6, path: '/work', name: 'Work Plan', icon: LuCalendar },
+		// { id: 6, path: '/work', name: 'Work Plan', icon: LuCalendar },
 	]
 	return (
 		<div className='w-16 md:w-56 fixed left-0 top-0 z-10 h-screen border-r px-4 bg-white'>
