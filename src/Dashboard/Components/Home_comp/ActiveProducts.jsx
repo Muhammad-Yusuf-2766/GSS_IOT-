@@ -44,7 +44,7 @@ const ActiveProducts = () => {
 								daysRemaining < 20 ? 'bg-red-400 text-white' : ''
 
 							return (
-								<tr key={index} className='bg-white border-b hover:bg-gray-50'>
+								<tr key={index} className='bg-white border-b hover:bg-gray-100'>
 									<th
 										scope='row'
 										className='px-4 py-1 font-medium text-gray-900 whitespace-nowrap'

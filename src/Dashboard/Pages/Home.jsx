@@ -1,10 +1,10 @@
-import ActiveProducts from '../Components/Home_components/ActiveProducts'
-import Clinets from '../Components/Home_components/ClientsCard'
-import MemberCard from '../Components/Home_components/MemberCard'
-import Products from '../Components/Home_components/Products'
-import ProjectStatistics from '../Components/Home_components/ProjectStatistics'
+import ActiveProducts from '../Components/Home_comp/ActiveProducts'
+import Clinets from '../Components/Home_comp/ClientsCard'
+import MemberCard from '../Components/Home_comp/MemberCard'
+import Products from '../Components/Home_comp/Products'
+import ProjectStatistics from '../Components/Home_comp/ProjectStatistics'
 
-import Users from '../Components/Home_components/UsersCard'
+import Users from '../Components/Home_comp/UsersCard'
 
 const Home = () => {
 	return (

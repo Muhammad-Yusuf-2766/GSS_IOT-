@@ -1,4 +1,4 @@
-import Products from '../Components/Products_components/Products'
+import Products from '../Components/Products_comp/Products'
 
 const AllProducts = () => {
 	return (

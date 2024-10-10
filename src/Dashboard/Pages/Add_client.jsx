@@ -1,4 +1,4 @@
-import ClientForm from '../Components/Client_components/Client_form'
+import ClientForm from '../Components/Client_comp/Client_form'
 import { Gate_Ways } from '../DB/Products_data'
 
 const AddClient = () => {

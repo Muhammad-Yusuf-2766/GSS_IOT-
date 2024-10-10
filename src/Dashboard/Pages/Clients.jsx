@@ -1,5 +1,5 @@
 // import React from 'react'
-import AllClients from '../Components/Client_components/ClientsList'
+import AllClients from '../Components/Client_comp/ClientsList'
 
 const Clients = () => {
 	return (
