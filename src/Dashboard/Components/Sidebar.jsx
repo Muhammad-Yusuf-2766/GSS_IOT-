@@ -4,7 +4,7 @@ import { AiOutlineProduct } from 'react-icons/ai'
 import { FaSuitcase } from 'react-icons/fa'
 import { LuBox, LuUser } from 'react-icons/lu'
 import { TbUsers } from 'react-icons/tb'
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 // ==== ICONS ==== //
 
 const Sidebar = () => {
@@ -47,16 +47,18 @@ const Sidebar = () => {
 							activeLink === index ? 'bg-indigo-100 text-indigo-600' : ''
 						}`}
 					>
-						<Link
+						<NavLink
 							to={link.path}
 							onClick={() => handleLinkClick(index)}
-							className='flex items-center justify-center md:justify-start md:gap-5'
+							className={
+								' flex items-center justify-center md:justify-start md:gap-5'
+							}
 						>
 							<span className='text-indigo-500 text-[20px]'>{link.icon()}</span>
 							<span className='text-sm text-gray-500 hidden md:flex'>
 								{link.name}
 							</span>
-						</Link>
+						</NavLink>
 					</li>
 				))}
 			</ul>

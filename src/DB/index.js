@@ -7,13 +7,7 @@ export const swiperData = [
 	},
 	{
 		id: 2,
-		bgImg: '/Hero/background_img_2.jpg',
-		header: 'GLOBAL SMART SOLUTION',
-		desc: '글로벌 스마트 솔루션은 4차 산업 시대의 다양한 비대면 제품을 개발하여 고객의 니즈에 맞는 맞춤형 솔루션을 제공합니다.',
-	},
-	{
-		id: 3,
-		bgImg: '/Hero/background_img_3.jpg',
+		bgImg: '/Hero/background_img_1.jpg',
 		header: 'GLOBAL SMART SOLUTION',
 		desc: '글로벌 스마트 솔루션은 4차 산업 시대의 다양한 비대면 제품을 개발하여 고객의 니즈에 맞는 맞춤형 솔루션을 제공합니다.',
 	},

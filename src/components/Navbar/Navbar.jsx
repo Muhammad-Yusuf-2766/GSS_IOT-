@@ -1,6 +1,6 @@
 import { Menu, X } from 'lucide-react'
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { logOutRequest } from '../../ApiServices/Auth_api'
 import { verifyUserData } from '../../ApiServices/verifyAuth'
@@ -85,19 +85,23 @@ const Navbar = () => {
 						<ul className='list-none lg:flex md:flex sm:block block items-center gap-x-2 lg:gap-y-0 md:gap-y-0 sm:gap-y-10 gap-y-10'>
 							{navItems.map((item, index) => (
 								<li key={index}>
-									<Link
+									<NavLink
 										to={item.link}
-										className='text-gray-700 text-xl font-semibold hover:underline ease-out duration-700 mx-5 '
+										className={({ isActive }) =>
+											isActive
+												? 'text-xl font-semibold hover:underline ease-out duration-700 mx-5 underline underline-offset-4 text-indigo-600'
+												: 'text-gray-700 text-xl font-semibold hover:underline underline-offset-4 ease-out duration-700 mx-5 '
+										}
 									>
 										{item.name}
-									</Link>
+									</NavLink>
 								</li>
 							))}
 							<li>
 								{verifyUserData ? (
 									<Link
 										to='/dashboard'
-										className='text-gray-700 text-xl font-semibold hover:underline ease-out duration-700 mx-5 '
+										className='text-gray-700 text-xl font-semibold hover:underline underline-offset-4 ease-out duration-700 mx-5 '
 									>
 										Dashboard
 									</Link>
@@ -107,7 +111,7 @@ const Navbar = () => {
 					</div>
 					<div className='flex gap-x-2'>
 						{verifyUserData ? (
-							<div>
+							<div className=''>
 								<UserHeader handeLogout={handleLogoutRequest} />
 							</div>
 						) : (

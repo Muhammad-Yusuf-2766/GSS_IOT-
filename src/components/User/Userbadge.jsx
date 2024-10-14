@@ -32,14 +32,8 @@ const UserHeader = ({ handeLogout }) => {
 			<div className='w-32 relative'>
 				<img
 					ref={imgRef}
-					className='object-cover bg-white shadow-md shadow-gray-400 hover:shadow-gray-600 hover:bg-gradient-to-br duration-200 focus:ring-1 focus:outline-none focus:ring-gray-400 border-2 border-gray-500'
-					src='/Members/Kim_prof.jpg'
-					style={{
-						width: '50px',
-						height: '50px',
-						borderRadius: '50%',
-						cursor: 'pointer',
-					}}
+					className='object-cover w-12 cursor-pointer rounded-full shadow-md shadow-gray-400 hover:shadow-gray-600 duration-200'
+					src='/Members/default_user.webp'
 					alt=''
 					onClick={() => setOpenDrop(!openDrop)}
 				/>

@@ -1,120 +1,155 @@
-import axios from 'axios' // Import Axios for making HTTP requests
-import { useEffect, useState } from 'react'
-import { FaLock, FaLockOpen } from 'react-icons/fa6' // Import React Icons
+import axios from 'axios'
+import { useEffect, useRef, useState } from 'react'
+import { FaLock, FaLockOpen } from 'react-icons/fa6'
 import io from 'socket.io-client'
 
-// Initialize the Socket.IO client connection
 const socket = io('http://localhost:3000')
 
 function NodeDisplay() {
 	const [error, setError] = useState('')
-	const [nodes, setNodes] = useState([]) // Start with an empty array
-	const [socketConnected, setSocketConnected] = useState(false) // State to track the connection status of the socket
+	const [nodes, setNodes] = useState([])
+	const [socketConnected, setSocketConnected] = useState(false)
+	const alarmRef = useRef(null)
 
 	// Function to fetch gateways for the logged-in boss user
 	const fetchGateways = async (userId, userTitle) => {
 		try {
-			// Choose the appropriate endpoint based on the user's title
 			const endpoint =
 				userTitle === 'BOSS'
 					? 'http://localhost:3000/gateways/boss'
 					: 'http://localhost:3000/gateways/worker'
 
 			const response = await axios.get(endpoint, {
-				params: { userId }, // Pass userId as a query parameter
+				params: { userId },
+				validateStatus: status => status < 500,
 			})
 
-			if (response.data.error) {
+			if (response.status !== 200 || response.data.error) {
 				setError(
 					response.data.error || 'An error occurred while fetching gateways'
 				)
+				setNodes([])
 			} else {
-				console.log('Subscribed to gateways:', response.data)
-
-				// Initialize nodes based on totalNodeCount
+				setError('')
 				const totalNodeCount = response.data.totalNodeCount || 0
 				const initialNodes = Array.from(
 					{ length: totalNodeCount },
 					(_, index) => ({
-						doorNum: index + 1, // doorNum will be from 1 to totalNodeCount
-						doorChk: 1, // default door state (closed)
-						betChk: '0.V', // default battery status
+						doorNum: index + 1,
+						doorChk: 0,
+						betChk: '0',
 					})
 				)
-				setNodes(initialNodes) // Set the nodes state based on the total count
+				setNodes(initialNodes)
 			}
 		} catch (error) {
 			console.error('Error fetching gateways:', error)
+			setError('An unexpected error occurred while fetching gateways.')
 		}
 	}
 
 	useEffect(() => {
-		// Fetch logged-in user data from localStorage
 		const userData = JSON.parse(localStorage.getItem('user_data'))
 
 		if (userData && userData._id && userData.user_title) {
-			// Call the fetchGateways function with the userId and userTitle
-			fetchGateways(userData._id, userData.user_title)
+			// Check if nodes exist in localStorage before fetching from backend
+			const savedNodes = JSON.parse(localStorage.getItem('nodes'))
+			if (savedNodes && savedNodes.length > 0) {
+				setNodes(savedNodes)
+			} else {
+				// Fetch from backend if no saved nodes found
+				fetchGateways(userData._id, userData.user_title)
+			}
 		} else {
 			console.error(
 				'User data not found in localStorage or missing required fields'
 			)
 		}
 
-		// Listen for socket connection and disconnection events
 		socket.on('connect', () => {
 			console.log('Socket connected')
-			setSocketConnected(true) // Update state to indicate connection
+			setSocketConnected(true)
 		})
 
 		socket.on('disconnect', () => {
 			console.log('Socket disconnected')
-			setSocketConnected(false) // Update state to indicate disconnection
+			setSocketConnected(false)
 		})
 
-		// Listen for incoming MQTT data via Socket.IO
-		socket.on('mqttData', data => {
+		socket.on('mqttData', ({ serialNumber, data }) => {
 			console.log('Received MQTT data via Socket.io:', data)
-			const parsedData = JSON.parse(data) // Convert the message to an object
 
-			// Update the node state
+			const parsedData = JSON.parse(data)
+
+			if (parsedData.doorChk === 1) {
+				console.log('Playing alarm because doorChk is 1')
+				testAlarm()
+			}
+
 			setNodes(prevNodes => {
 				const existingNodeIndex = prevNodes.findIndex(
 					node => node.doorNum === parsedData.doorNum
 				)
+
+				let updatedNodes
 				if (existingNodeIndex !== -1) {
-					const updatedNodes = [...prevNodes]
-					updatedNodes[existingNodeIndex] = parsedData
-					return updatedNodes
+					updatedNodes = [...prevNodes]
+					updatedNodes[existingNodeIndex] = {
+						...prevNodes[existingNodeIndex],
+						...parsedData,
+					}
 				} else {
-					return [...prevNodes, parsedData]
+					updatedNodes = [...prevNodes, parsedData]
 				}
+
+				// Save the updated nodes to localStorage
+				localStorage.setItem('nodes', JSON.stringify(updatedNodes))
+				return updatedNodes
 			})
 		})
 
 		return () => {
-			// Clean up the socket connection and event listeners
 			socket.off('connect')
 			socket.off('disconnect')
 			socket.off('mqttData')
 		}
 	}, [])
 
-	// Whenever `nodes` state updates, save it to localStorage
 	useEffect(() => {
 		localStorage.setItem('nodes', JSON.stringify(nodes))
 	}, [nodes])
+
+	const playAlarm = () => {
+		if (alarmRef.current) {
+			alarmRef.current
+				.play()
+				.catch(err => console.log('Error playing alarm:', err))
+		}
+	}
+
+	const testAlarm = () => {
+		playAlarm()
+	}
 
 	return (
 		<div className='px-5'>
 			<h1 className='text-2xl font-bold text-center mb-6'>
 				Hello MQTT & Socket.io
 			</h1>
-
-			{/* Display the connection status */}
 			<h2 className='text-center text-lg mb-4'>
 				{socketConnected ? 'Socket is Connected' : 'Socket is Disconnected'}
 			</h2>
+
+			{error && <h1 className='text-lg text-red-600 text-center'>{error}</h1>}
+
+			<div className='text-center mb-4'>
+				<button
+					onClick={playAlarm}
+					className='px-4 py-2 bg-blue-500 text-white rounded'
+				>
+					Monitoring all nodes
+				</button>
+			</div>
 
 			<div className='node-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 cursor-pointer'>
 				{nodes.map(node => (
@@ -124,7 +159,6 @@ function NodeDisplay() {
 					>
 						<h2 className='text-xl font-semibold mb-4'>Node {node.doorNum}</h2>
 
-						{/* Render React Icons based on the doorChk value */}
 						{node.doorChk === 1 ? (
 							<FaLockOpen
 								color='red'
@@ -145,9 +179,8 @@ function NodeDisplay() {
 						</h3>
 					</div>
 				))}
-
-				<h1 className='text-lg text-red-600'>{error}</h1>
 			</div>
+			<audio ref={alarmRef} src='/Audio/alarm_audio.wav' />
 		</div>
 	)
 }
